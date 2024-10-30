@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\DesafioUnidade8.props" />
+</Project>
