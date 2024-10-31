@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Context;
-using DesafioUnidade8.Models;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
             return await _context.Produtos.ToListAsync();
         }
 
-        // GET DETAILS: api/Produto/5
+        // GET DETAILS BY ID: api/Produto/1
         [HttpGet("{id}")]
         public async Task<ActionResult<Produto>> GetProduto(int id)
         {
@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
             return CreatedAtAction(nameof(GetProduto), new { id = produto.Id_Produto }, produto);
         }
 
-        // PUT: api/Produto/5
+        // PUT: api/Produto/1
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduto(int id, Produto produto)
         {
@@ -77,7 +77,7 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Produto/5
+        // DELETE: api/Produto/1
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduto(int id)
         {

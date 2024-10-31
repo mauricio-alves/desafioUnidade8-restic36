@@ -8,7 +8,7 @@ using WebAPI.Context;
 
 #nullable disable
 
-namespace DesafioUnidade8.Migrations
+namespace WebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace DesafioUnidade8.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("DesafioUnidade8.Models.Cliente", b =>
+            modelBuilder.Entity("WebAPI.Models.Cliente", b =>
                 {
                     b.Property<int>("Id_Cliente")
                         .ValueGeneratedOnAdd()
@@ -47,7 +47,7 @@ namespace DesafioUnidade8.Migrations
                     b.ToTable("Clientes");
                 });
 
-            modelBuilder.Entity("DesafioUnidade8.Models.Pedido", b =>
+            modelBuilder.Entity("WebAPI.Models.Pedido", b =>
                 {
                     b.Property<int>("Id_Pedido")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace DesafioUnidade8.Migrations
                     b.ToTable("Pedidos");
                 });
 
-            modelBuilder.Entity("DesafioUnidade8.Models.Pedido_tem_Produto", b =>
+            modelBuilder.Entity("WebAPI.Models.Pedido_tem_Produto", b =>
                 {
                     b.Property<int>("Pedido_Id_Pedido")
                         .HasColumnType("integer");
@@ -77,17 +77,17 @@ namespace DesafioUnidade8.Migrations
                     b.Property<int>("Produto_Id_Produto")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("Quantidade")
+                    b.Property<int>("Quantidade")
                         .HasColumnType("integer");
 
                     b.HasKey("Pedido_Id_Pedido");
 
                     b.HasIndex("Produto_Id_Produto");
 
-                    b.ToTable("Pedido_tem_Produto");
+                    b.ToTable("PedidoTemProdutos");
                 });
 
-            modelBuilder.Entity("DesafioUnidade8.Models.Produto", b =>
+            modelBuilder.Entity("WebAPI.Models.Produto", b =>
                 {
                     b.Property<int>("Id_Produto")
                         .ValueGeneratedOnAdd()
@@ -109,9 +109,9 @@ namespace DesafioUnidade8.Migrations
                     b.ToTable("Produtos");
                 });
 
-            modelBuilder.Entity("DesafioUnidade8.Models.Pedido", b =>
+            modelBuilder.Entity("WebAPI.Models.Pedido", b =>
                 {
-                    b.HasOne("DesafioUnidade8.Models.Cliente", "Cliente")
+                    b.HasOne("WebAPI.Models.Cliente", "Cliente")
                         .WithMany("Pedidos")
                         .HasForeignKey("Cliente_Id_Cliente")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -120,15 +120,15 @@ namespace DesafioUnidade8.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("DesafioUnidade8.Models.Pedido_tem_Produto", b =>
+            modelBuilder.Entity("WebAPI.Models.Pedido_tem_Produto", b =>
                 {
-                    b.HasOne("DesafioUnidade8.Models.Pedido", "Pedido")
+                    b.HasOne("WebAPI.Models.Pedido", "Pedido")
                         .WithMany("PedidoTemProdutos")
                         .HasForeignKey("Pedido_Id_Pedido")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DesafioUnidade8.Models.Produto", "Produto")
+                    b.HasOne("WebAPI.Models.Produto", "Produto")
                         .WithMany("PedidoTemProdutos")
                         .HasForeignKey("Produto_Id_Produto")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -139,17 +139,17 @@ namespace DesafioUnidade8.Migrations
                     b.Navigation("Produto");
                 });
 
-            modelBuilder.Entity("DesafioUnidade8.Models.Cliente", b =>
+            modelBuilder.Entity("WebAPI.Models.Cliente", b =>
                 {
                     b.Navigation("Pedidos");
                 });
 
-            modelBuilder.Entity("DesafioUnidade8.Models.Pedido", b =>
+            modelBuilder.Entity("WebAPI.Models.Pedido", b =>
                 {
                     b.Navigation("PedidoTemProdutos");
                 });
 
-            modelBuilder.Entity("DesafioUnidade8.Models.Produto", b =>
+            modelBuilder.Entity("WebAPI.Models.Produto", b =>
                 {
                     b.Navigation("PedidoTemProdutos");
                 });

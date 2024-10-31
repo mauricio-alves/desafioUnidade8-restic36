@@ -2550,9 +2550,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\maual\\Downloads\\desafioUnidade8-restic36\\DesafioUnidade8\\DesafioUnidade8.csproj",
-      "projectName": "DesafioUnidade8",
-      "projectPath": "C:\\Users\\maual\\Downloads\\desafioUnidade8-restic36\\DesafioUnidade8\\DesafioUnidade8.csproj",
+      "projectUniqueName": "C:\\Users\\maual\\Downloads\\desafioUnidade8-restic36\\DesafioUnidade8\\WebAPI.csproj",
+      "projectName": "WebAPI",
+      "projectPath": "C:\\Users\\maual\\Downloads\\desafioUnidade8-restic36\\DesafioUnidade8\\WebAPI.csproj",
       "packagesPath": "C:\\Users\\maual\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\maual\\Downloads\\desafioUnidade8-restic36\\DesafioUnidade8\\obj\\",
       "projectStyle": "PackageReference",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OzpDXnfGLR8=",
+  "dgSpecHash": "Spai2TL5USk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\maual\\Downloads\\desafioUnidade8-restic36\\DesafioUnidade8\\DesafioUnidade8.csproj",
+  "projectFilePath": "C:\\Users\\maual\\Downloads\\desafioUnidade8-restic36\\DesafioUnidade8\\WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maual\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\maual\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DesafioUnidade8.Migrations
+namespace WebAPI.Migrations
 {
     /// <inheritdoc />
     public partial class MigracaoInicial : Migration
@@ -64,24 +64,24 @@ namespace DesafioUnidade8.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pedido_tem_Produto",
+                name: "PedidoTemProdutos",
                 columns: table => new
                 {
                     Pedido_Id_Pedido = table.Column<int>(type: "integer", nullable: false),
                     Produto_Id_Produto = table.Column<int>(type: "integer", nullable: false),
-                    Quantidade = table.Column<int>(type: "integer", nullable: true)
+                    Quantidade = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pedido_tem_Produto", x => x.Pedido_Id_Pedido);
+                    table.PrimaryKey("PK_PedidoTemProdutos", x => x.Pedido_Id_Pedido);
                     table.ForeignKey(
-                        name: "FK_Pedido_tem_Produto_Pedidos_Pedido_Id_Pedido",
+                        name: "FK_PedidoTemProdutos_Pedidos_Pedido_Id_Pedido",
                         column: x => x.Pedido_Id_Pedido,
                         principalTable: "Pedidos",
                         principalColumn: "Id_Pedido",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Pedido_tem_Produto_Produtos_Produto_Id_Produto",
+                        name: "FK_PedidoTemProdutos_Produtos_Produto_Id_Produto",
                         column: x => x.Produto_Id_Produto,
                         principalTable: "Produtos",
                         principalColumn: "Id_Produto",
@@ -89,21 +89,21 @@ namespace DesafioUnidade8.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pedido_tem_Produto_Produto_Id_Produto",
-                table: "Pedido_tem_Produto",
-                column: "Produto_Id_Produto");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pedidos_Cliente_Id_Cliente",
                 table: "Pedidos",
                 column: "Cliente_Id_Cliente");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PedidoTemProdutos_Produto_Id_Produto",
+                table: "PedidoTemProdutos",
+                column: "Produto_Id_Produto");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Pedido_tem_Produto");
+                name: "PedidoTemProdutos");
 
             migrationBuilder.DropTable(
                 name: "Pedidos");

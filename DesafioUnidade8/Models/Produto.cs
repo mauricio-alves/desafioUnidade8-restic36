@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DesafioUnidade8.Models;
+namespace WebAPI.Models;
 public class Produto
 {
     [Key]
@@ -9,6 +9,6 @@ public class Produto
     public string? Tipo { get; set; }
     public decimal Valor { get; set; }
 
-    // Relacionamento com Pedido_tem_Produto
-    // public required ICollection<Pedido_tem_Produto> PedidoTemProdutos { get; set; }
+    // Relacionamento muitos-para-muitos com Pedido_tem_Produto
+    public ICollection<Pedido_tem_Produto> PedidoTemProdutos { get; set; } = new List<Pedido_tem_Produto>();
 }
