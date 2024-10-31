@@ -10,5 +10,6 @@ namespace WebAPI.Context
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
+        public DbSet<Pedido_tem_Produto> PedidoTemProdutos { get; set; }
     }
 }

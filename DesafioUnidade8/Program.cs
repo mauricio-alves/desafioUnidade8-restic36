@@ -8,7 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add PostgreSQL
-string postgreSQLConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string postgreSQLConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "DefaultConnectionString";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(postgreSQLConnectionString)
@@ -24,7 +24,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 
