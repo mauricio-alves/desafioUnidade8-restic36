@@ -27,7 +27,10 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Clientes
+                .Include(c => c.Pedidos) // Inclui os pedidos do cliente
+                    .ThenInclude(p => p.PedidoTemProdutos) // Inclui os produtos em cada pedido
+                .FirstOrDefaultAsync(c => c.Id_Cliente == id);                
 
             if (cliente == null)
             {

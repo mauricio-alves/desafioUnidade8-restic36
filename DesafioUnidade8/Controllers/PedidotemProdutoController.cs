@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
             var pedidoTemProduto = await _context.PedidoTemProdutos
                 .Include(p => p.Pedido)  // Inclui as informações do pedido
                 .Include(p => p.Produto)  // Inclui as informações do produto
-                .FirstOrDefaultAsync(p => p.Id_Pedido == id); // Aqui você deve verificar o ID que está utilizando
+                .FirstOrDefaultAsync(p => p.Id_PedidoProduto == id); // Aqui você deve verificar o ID que está utilizando
 
             if (pedidoTemProduto == null)
             {
@@ -50,14 +50,14 @@ namespace WebAPI.Controllers
             _context.PedidoTemProdutos.Add(pedidoTemProduto);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPedidoTemProduto), new { id = pedidoTemProduto.Id_Pedido }, pedidoTemProduto);
+            return CreatedAtAction(nameof(GetPedidoTemProduto), new { id = pedidoTemProduto.Id_PedidoProduto }, pedidoTemProduto);
         }
 
         // PUT: api/PedidoTemProduto/1
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPedidoTemProduto(int id, Pedido_tem_Produto pedidoTemProduto)
         {
-            if (id != pedidoTemProduto.Id_Pedido)
+            if (id != pedidoTemProduto.Id_PedidoProduto)
             {
                 return BadRequest();
             }
@@ -101,7 +101,7 @@ namespace WebAPI.Controllers
 
         private bool PedidoTemProdutoExists(int id)
         {
-            return _context.PedidoTemProdutos.Any(e => e.Id_Pedido == id);
+            return _context.PedidoTemProdutos.Any(e => e.Id_PedidoProduto == id);
         }
     }
 }
