@@ -50,14 +50,14 @@ namespace WebAPI.Migrations
                     Id_Pedido = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Status = table.Column<string>(type: "text", nullable: false),
-                    Cliente_Id_Cliente = table.Column<int>(type: "integer", nullable: false)
+                    Id_Cliente = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pedidos", x => x.Id_Pedido);
                     table.ForeignKey(
-                        name: "FK_Pedidos_Clientes_Cliente_Id_Cliente",
-                        column: x => x.Cliente_Id_Cliente,
+                        name: "FK_Pedidos_Clientes_Id_Cliente",
+                        column: x => x.Id_Cliente,
                         principalTable: "Clientes",
                         principalColumn: "Id_Cliente",
                         onDelete: ReferentialAction.Cascade);
@@ -67,36 +67,43 @@ namespace WebAPI.Migrations
                 name: "PedidoTemProdutos",
                 columns: table => new
                 {
-                    Pedido_Id_Pedido = table.Column<int>(type: "integer", nullable: false),
-                    Produto_Id_Produto = table.Column<int>(type: "integer", nullable: false),
+                    Id_PedidoProduto = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id_Pedido = table.Column<int>(type: "integer", nullable: false),
+                    Id_Produto = table.Column<int>(type: "integer", nullable: false),
                     Quantidade = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PedidoTemProdutos", x => x.Pedido_Id_Pedido);
+                    table.PrimaryKey("PK_PedidoTemProdutos", x => x.Id_PedidoProduto);
                     table.ForeignKey(
-                        name: "FK_PedidoTemProdutos_Pedidos_Pedido_Id_Pedido",
-                        column: x => x.Pedido_Id_Pedido,
+                        name: "FK_PedidoTemProdutos_Pedidos_Id_Pedido",
+                        column: x => x.Id_Pedido,
                         principalTable: "Pedidos",
                         principalColumn: "Id_Pedido",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PedidoTemProdutos_Produtos_Produto_Id_Produto",
-                        column: x => x.Produto_Id_Produto,
+                        name: "FK_PedidoTemProdutos_Produtos_Id_Produto",
+                        column: x => x.Id_Produto,
                         principalTable: "Produtos",
                         principalColumn: "Id_Produto",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pedidos_Cliente_Id_Cliente",
+                name: "IX_Pedidos_Id_Cliente",
                 table: "Pedidos",
-                column: "Cliente_Id_Cliente");
+                column: "Id_Cliente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PedidoTemProdutos_Produto_Id_Produto",
+                name: "IX_PedidoTemProdutos_Id_Pedido",
                 table: "PedidoTemProdutos",
-                column: "Produto_Id_Produto");
+                column: "Id_Pedido");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PedidoTemProdutos_Id_Produto",
+                table: "PedidoTemProdutos",
+                column: "Id_Produto");
         }
 
         /// <inheritdoc />

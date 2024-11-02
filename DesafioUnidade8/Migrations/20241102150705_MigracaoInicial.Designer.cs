@@ -12,7 +12,7 @@ using WebAPI.Context;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241031140305_MigracaoInicial")]
+    [Migration("20241102150705_MigracaoInicial")]
     partial class MigracaoInicial
     {
         /// <inheritdoc />
@@ -58,7 +58,7 @@ namespace WebAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id_Pedido"));
 
-                    b.Property<int>("Cliente_Id_Cliente")
+                    b.Property<int>("Id_Cliente")
                         .HasColumnType("integer");
 
                     b.Property<string>("Status")
@@ -67,25 +67,33 @@ namespace WebAPI.Migrations
 
                     b.HasKey("Id_Pedido");
 
-                    b.HasIndex("Cliente_Id_Cliente");
+                    b.HasIndex("Id_Cliente");
 
                     b.ToTable("Pedidos");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Pedido_tem_Produto", b =>
                 {
-                    b.Property<int>("Pedido_Id_Pedido")
+                    b.Property<int>("Id_PedidoProduto")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.Property<int>("Produto_Id_Produto")
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id_PedidoProduto"));
+
+                    b.Property<int>("Id_Pedido")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Id_Produto")
                         .HasColumnType("integer");
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("integer");
 
-                    b.HasKey("Pedido_Id_Pedido");
+                    b.HasKey("Id_PedidoProduto");
 
-                    b.HasIndex("Produto_Id_Produto");
+                    b.HasIndex("Id_Pedido");
+
+                    b.HasIndex("Id_Produto");
 
                     b.ToTable("PedidoTemProdutos");
                 });
@@ -116,7 +124,7 @@ namespace WebAPI.Migrations
                 {
                     b.HasOne("WebAPI.Models.Cliente", "Cliente")
                         .WithMany("Pedidos")
-                        .HasForeignKey("Cliente_Id_Cliente")
+                        .HasForeignKey("Id_Cliente")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -127,13 +135,13 @@ namespace WebAPI.Migrations
                 {
                     b.HasOne("WebAPI.Models.Pedido", "Pedido")
                         .WithMany("PedidoTemProdutos")
-                        .HasForeignKey("Pedido_Id_Pedido")
+                        .HasForeignKey("Id_Pedido")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebAPI.Models.Produto", "Produto")
-                        .WithMany("PedidoTemProdutos")
-                        .HasForeignKey("Produto_Id_Produto")
+                        .WithMany()
+                        .HasForeignKey("Id_Produto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -148,11 +156,6 @@ namespace WebAPI.Migrations
                 });
 
             modelBuilder.Entity("WebAPI.Models.Pedido", b =>
-                {
-                    b.Navigation("PedidoTemProdutos");
-                });
-
-            modelBuilder.Entity("WebAPI.Models.Produto", b =>
                 {
                     b.Navigation("PedidoTemProdutos");
                 });

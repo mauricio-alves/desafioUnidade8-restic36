@@ -137,7 +137,7 @@ namespace WebAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("WebAPI.Models.Produto", "Produto")
-                        .WithMany("PedidoTemProdutos")
+                        .WithMany()
                         .HasForeignKey("Id_Produto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -153,11 +153,6 @@ namespace WebAPI.Migrations
                 });
 
             modelBuilder.Entity("WebAPI.Models.Pedido", b =>
-                {
-                    b.Navigation("PedidoTemProdutos");
-                });
-
-            modelBuilder.Entity("WebAPI.Models.Produto", b =>
                 {
                     b.Navigation("PedidoTemProdutos");
                 });

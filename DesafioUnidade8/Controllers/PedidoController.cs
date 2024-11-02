@@ -20,7 +20,16 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pedido>>> GetPedidos()
         {
-            return await _context.Pedidos.Include(p => p.Cliente).ToListAsync();
+            var pedidos = await _context.Pedidos
+                .Include(p => p.PedidoTemProdutos) // Inclui os produtos em cada pedido
+                .ToListAsync();
+
+            if (pedidos == null)
+            {
+                return NotFound();
+            }
+
+            return pedidos;
         }
 
         // GET DETAILS BY ID: api/Pedido/1
@@ -28,8 +37,8 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<Pedido>> GetPedido(int id)
         {
             var pedido = await _context.Pedidos
-                .Include(p => p.Cliente) // Inclui as informações do cliente
-                .FirstOrDefaultAsync(p => p.Id_Pedido == id);
+                .Include(p => p.PedidoTemProdutos) // Inclui os produtos em cada pedido
+                .FirstOrDefaultAsync(p => p.Id_Pedido == id); // Busca o pedido pelo id
 
             if (pedido == null)
             {

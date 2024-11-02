@@ -9,9 +9,10 @@ public class Pedido
     public int Id_Pedido { get; set; }
     public required string Status { get; set; }
 
+    public int Id_Cliente { get; set; }
+
     // Relacionamento muitos-para-um com Cliente
     [ForeignKey("Id_Cliente"), JsonIgnore]
-    public int Id_Cliente  { get; set; }
     public Cliente? Cliente { get; set; }
         
     // Relacionamento muitos-para-muitos com Pedido_tem_Produto

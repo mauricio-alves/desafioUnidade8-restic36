@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
             var pedidoTemProduto = await _context.PedidoTemProdutos
                 .Include(p => p.Pedido)  // Inclui as informações do pedido
                 .Include(p => p.Produto)  // Inclui as informações do produto
-                .FirstOrDefaultAsync(p => p.Id_PedidoProduto == id); // Aqui você deve verificar o ID que está utilizando
+                .FirstOrDefaultAsync(p => p.Id_PedidoProduto == id); // Busca pelo id
 
             if (pedidoTemProduto == null)
             {

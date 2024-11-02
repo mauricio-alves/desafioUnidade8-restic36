@@ -20,7 +20,17 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
-            return await _context.Clientes.ToListAsync();
+            var clientes = await _context.Clientes
+                .Include(c => c.Pedidos) // Inclui os pedidos relacionados
+                    .ThenInclude(p => p.PedidoTemProdutos) // Inclui os produtos em cada pedido
+                .ToListAsync();
+
+            if (clientes == null)
+            {
+                return NotFound();
+            }
+
+            return clientes;            
         }
 
         // GET DETAILS BY ID: api/Cliente/1
@@ -30,7 +40,7 @@ namespace WebAPI.Controllers
             var cliente = await _context.Clientes
                 .Include(c => c.Pedidos) // Inclui os pedidos do cliente
                     .ThenInclude(p => p.PedidoTemProdutos) // Inclui os produtos em cada pedido
-                .FirstOrDefaultAsync(c => c.Id_Cliente == id);                
+                .FirstOrDefaultAsync(c => c.Id_Cliente == id); // Busca o cliente pelo id        
 
             if (cliente == null)
             {

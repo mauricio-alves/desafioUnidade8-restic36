@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Produto>> GetProduto(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
+            var produto = await _context.Produtos.FindAsync(id); // Busca o produto pelo id
 
             if (produto == null)
             {
