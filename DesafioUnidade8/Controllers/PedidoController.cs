@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
 
         // GET ALL: api/Pedido
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pedido>>> GetPedidos()
+        public async Task<ActionResult<IEnumerable<Pedido>>> GetPedidos() // Retorna todos os pedidos
         {
             var pedidos = await _context.Pedidos
                 .Include(p => p.PedidoTemProdutos) // Inclui os produtos em cada pedido
@@ -26,15 +26,15 @@ namespace WebAPI.Controllers
 
             if (pedidos == null)
             {
-                return NotFound();
+                return NotFound("Pedidos não encontrados.");
             }
 
-            return pedidos;
+            return pedidos; // Retorna os pedidos
         }
 
         // GET DETAILS BY ID: api/Pedido/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pedido>> GetPedido(int id)
+        public async Task<ActionResult<Pedido>> GetPedido(int id) // Retorna o pedido pelo id
         {
             var pedido = await _context.Pedidos
                 .Include(p => p.PedidoTemProdutos) // Inclui os produtos em cada pedido
@@ -42,42 +42,47 @@ namespace WebAPI.Controllers
 
             if (pedido == null)
             {
-                return NotFound();
+                return NotFound("Pedido não encontrado.");
             }
 
-            return pedido;
+            return pedido; // Retorna o pedido
         }
 
         // POST: api/Pedido
         [HttpPost]
-        public async Task<ActionResult<Pedido>> PostPedido(Pedido pedido)
+        public async Task<ActionResult<Pedido>> PostPedido(Pedido pedido) // Cria um novo pedido
         {
-            _context.Pedidos.Add(pedido);
-            await _context.SaveChangesAsync();
+            if (pedido == null)
+            {
+                return BadRequest("Pedido não informado.");
+            }
 
-            return CreatedAtAction(nameof(GetPedido), new { id = pedido.Id_Pedido }, pedido);
+            _context.Pedidos.Add(pedido); // Adiciona o pedido
+            await _context.SaveChangesAsync(); // Salva o pedido no banco de dados
+
+            return CreatedAtAction(nameof(GetPedido), new { id = pedido.Id_Pedido }, pedido); // Retorna o pedido criado
         }
 
         // PUT: api/Pedido/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPedido(int id, Pedido pedido)
+        public async Task<IActionResult> PutPedido(int id, Pedido pedido) // Atualiza um pedido
         {
             if (id != pedido.Id_Pedido)
             {
-                return BadRequest();
+                return BadRequest("Id do pedido não corresponde.");
             }
 
-            _context.Entry(pedido).State = EntityState.Modified;
+            _context.Entry(pedido).State = EntityState.Modified; // Atualiza o pedido
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); // Salva as alterações
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!PedidoExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Pedido não encontrado.");
                 }
                 else
                 {
@@ -85,28 +90,28 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(pedido); // Retorna o pedido atualizado
         }
 
         // DELETE: api/Pedido/1
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePedido(int id)
+        public async Task<IActionResult> DeletePedido(int id) // Deleta um pedido
         {
-            var pedido = await _context.Pedidos.FindAsync(id);
+            var pedido = await _context.Pedidos.FindAsync(id); // Busca o pedido pelo id
             if (pedido == null)
             {
-                return NotFound();
+                return NotFound("Pedido não encontrado.");
             }
 
-            _context.Pedidos.Remove(pedido);
-            await _context.SaveChangesAsync();
+            _context.Pedidos.Remove(pedido); // Remove o pedido
+            await _context.SaveChangesAsync(); // Salva as alterações
 
-            return NoContent();
+            return Ok(pedido); // Retorna o pedido removido
         }
 
         private bool PedidoExists(int id)
         {
-            return _context.Pedidos.Any(e => e.Id_Pedido == id);
+            return _context.Pedidos.Any(e => e.Id_Pedido == id); // Verifica se o pedido existe
         }
     }
 }

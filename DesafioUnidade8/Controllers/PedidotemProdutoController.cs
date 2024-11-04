@@ -18,17 +18,24 @@ namespace WebAPI.Controllers
 
         // GET ALL: api/PedidoTemProduto
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pedido_tem_Produto>>> GetPedidoTemProdutos()
+        public async Task<ActionResult<IEnumerable<Pedido_tem_Produto>>> GetPedidoTemProdutos() // Retorna todos os pedidos
         {
-            return await _context.PedidoTemProdutos
+            var pedidosTemProdutos = await _context.PedidoTemProdutos
                 .Include(p => p.Pedido)  // Inclui as informações do pedido
                 .Include(p => p.Produto)  // Inclui as informações do produto
-                .ToListAsync();
+                .ToListAsync(); // Busca todos os pedidos
+
+            if (pedidosTemProdutos == null)
+            {
+                return NotFound("Pedidos não encontrados.");
+            }
+
+            return pedidosTemProdutos; // Retorna os pedidos
         }
 
         // GET DETAILS BY ID: api/PedidoTemProduto/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pedido_tem_Produto>> GetPedidoTemProduto(int id)
+        public async Task<ActionResult<Pedido_tem_Produto>> GetPedidoTemProduto(int id) // Retorna o pedido pelo id
         {
             var pedidoTemProduto = await _context.PedidoTemProdutos
                 .Include(p => p.Pedido)  // Inclui as informações do pedido
@@ -37,42 +44,47 @@ namespace WebAPI.Controllers
 
             if (pedidoTemProduto == null)
             {
-                return NotFound();
+                return NotFound("Pedido não encontrado.");
             }
 
-            return pedidoTemProduto;
+            return pedidoTemProduto; // Retorna o pedido
         }
 
         // POST: api/PedidoTemProduto
         [HttpPost]
-        public async Task<ActionResult<Pedido_tem_Produto>> PostPedidoTemProduto(Pedido_tem_Produto pedidoTemProduto)
+        public async Task<ActionResult<Pedido_tem_Produto>> PostPedidoTemProduto(Pedido_tem_Produto pedidoTemProduto) // Cria um novo pedido
         {
-            _context.PedidoTemProdutos.Add(pedidoTemProduto);
-            await _context.SaveChangesAsync();
+            if (pedidoTemProduto == null)
+            {
+                return BadRequest("Pedido não informado.");
+            }
 
-            return CreatedAtAction(nameof(GetPedidoTemProduto), new { id = pedidoTemProduto.Id_PedidoProduto }, pedidoTemProduto);
+            _context.PedidoTemProdutos.Add(pedidoTemProduto); // Adiciona o pedido
+            await _context.SaveChangesAsync(); // Salva o pedido no banco de dados
+
+            return CreatedAtAction(nameof(GetPedidoTemProduto), new { id = pedidoTemProduto.Id_PedidoProduto }, pedidoTemProduto); // Retorna o pedido criado
         }
 
         // PUT: api/PedidoTemProduto/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPedidoTemProduto(int id, Pedido_tem_Produto pedidoTemProduto)
+        public async Task<IActionResult> PutPedidoTemProduto(int id, Pedido_tem_Produto pedidoTemProduto) // Atualiza um pedido
         {
             if (id != pedidoTemProduto.Id_PedidoProduto)
             {
-                return BadRequest();
+                return BadRequest("Id do pedido não corresponde.");
             }
 
-            _context.Entry(pedidoTemProduto).State = EntityState.Modified;
+            _context.Entry(pedidoTemProduto).State = EntityState.Modified; // Atualiza o pedido
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); // Salva as alterações
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!PedidoTemProdutoExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Pedido não encontrado.");
                 }
                 else
                 {
@@ -80,28 +92,28 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(pedidoTemProduto); // Retorna o pedido atualizado
         }
 
         // DELETE: api/PedidoTemProduto/1
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePedidoTemProduto(int id)
+        public async Task<IActionResult> DeletePedidoTemProduto(int id) // Deleta um pedido
         {
-            var pedidoTemProduto = await _context.PedidoTemProdutos.FindAsync(id);
+            var pedidoTemProduto = await _context.PedidoTemProdutos.FindAsync(id); // Busca o pedido pelo id
             if (pedidoTemProduto == null)
             {
-                return NotFound();
+                return NotFound("Pedido não encontrado.");
             }
 
-            _context.PedidoTemProdutos.Remove(pedidoTemProduto);
-            await _context.SaveChangesAsync();
+            _context.PedidoTemProdutos.Remove(pedidoTemProduto); // Remove o pedido
+            await _context.SaveChangesAsync(); // Salva as alterações
 
-            return NoContent();
+            return Ok(pedidoTemProduto); // Retorna o pedido removido
         }
 
         private bool PedidoTemProdutoExists(int id)
         {
-            return _context.PedidoTemProdutos.Any(e => e.Id_PedidoProduto == id);
+            return _context.PedidoTemProdutos.Any(e => e.Id_PedidoProduto == id); // Verifica se o pedido existe
         }
     }
 }

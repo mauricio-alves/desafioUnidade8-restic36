@@ -18,55 +18,67 @@ namespace WebAPI.Controllers
 
         // GET ALL: api/Produto
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
+        public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos() // Retorna todos os produtos
         {
-            return await _context.Produtos.ToListAsync();
+            var produtos = await _context.Produtos.ToListAsync(); // Busca todos os produtos
+
+            if (produtos == null)
+            {
+                return NotFound("Produtos não encontrados.");
+            }
+
+            return produtos; // Retorna os produtos
         }
 
         // GET DETAILS BY ID: api/Produto/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<Produto>> GetProduto(int id)
+        public async Task<ActionResult<Produto>> GetProduto(int id) // Retorna o produto pelo id
         {
             var produto = await _context.Produtos.FindAsync(id); // Busca o produto pelo id
 
             if (produto == null)
             {
-                return NotFound();
+                return NotFound("Produto não encontrado.");
             }
 
-            return produto;
+            return produto; // Retorna o produto
         }
 
         // POST: api/Produto
         [HttpPost]
-        public async Task<ActionResult<Produto>> PostProduto(Produto produto)
+        public async Task<ActionResult<Produto>> PostProduto(Produto produto) // Cria um novo produto
         {
-            _context.Produtos.Add(produto);
-            await _context.SaveChangesAsync();
+            if (produto == null)
+            {
+                return BadRequest("Produto não informado.");
+            }
 
-            return CreatedAtAction(nameof(GetProduto), new { id = produto.Id_Produto }, produto);
+            _context.Produtos.Add(produto); // Adiciona o produto
+            await _context.SaveChangesAsync(); // Salva o produto no banco de dados
+
+            return CreatedAtAction(nameof(GetProduto), new { id = produto.Id_Produto }, produto); // Retorna o produto criado
         }
 
         // PUT: api/Produto/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduto(int id, Produto produto)
+        public async Task<IActionResult> PutProduto(int id, Produto produto) // Atualiza um produto
         {
             if (id != produto.Id_Produto)
             {
-                return BadRequest();
+                return BadRequest("Id do produto não corresponde.");
             }
 
-            _context.Entry(produto).State = EntityState.Modified;
+            _context.Entry(produto).State = EntityState.Modified; // Atualiza o produto
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); // Salva as alterações no banco de dados
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!ProdutoExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Produto não encontrado.");
                 }
                 else
                 {
@@ -74,28 +86,28 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(produto); // Retorna o produto atualizado
         }
 
         // DELETE: api/Produto/1
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduto(int id)
+        public async Task<IActionResult> DeleteProduto(int id) // Deleta um produto
         {
-            var produto = await _context.Produtos.FindAsync(id);
+            var produto = await _context.Produtos.FindAsync(id); // Busca o produto pelo id
             if (produto == null)
             {
-                return NotFound();
+                return NotFound("Produto não encontrado.");
             }
 
-            _context.Produtos.Remove(produto);
-            await _context.SaveChangesAsync();
+            _context.Produtos.Remove(produto); // Remove o produto
+            await _context.SaveChangesAsync(); // Salva as alterações no banco de dados
 
-            return NoContent();
+            return Ok(produto); // Retorna o produto removido
         }
 
         private bool ProdutoExists(int id)
         {
-            return _context.Produtos.Any(e => e.Id_Produto == id);
+            return _context.Produtos.Any(e => e.Id_Produto == id); // Verifica se o produto existe
         }
     }
 }
