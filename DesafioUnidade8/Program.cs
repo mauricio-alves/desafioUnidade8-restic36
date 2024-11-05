@@ -1,36 +1,35 @@
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Context;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args); // Cria a aplicação
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddControllers(); // Adiciona os controllers
+builder.Services.AddEndpointsApiExplorer(); // Adiciona o explorador de API
+builder.Services.AddSwaggerGen(); // Adiciona o gerador do Swagger
 
-// Add PostgreSQL
-string postgreSQLConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "DefaultConnectionString";
+// Início do PostgreSQL
+string postgreSQLConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "DefaultConnectionString"; // Define a string de conexão com o banco de dados
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(postgreSQLConnectionString)
+builder.Services.AddDbContext<AppDbContext>(options => // Adiciona o contexto do banco de dados
+    options.UseNpgsql(postgreSQLConnectionString) // Define o provedor do banco de dados
 );
-// End PostgreSQL
+// Fim do PostgreSQL
 
-var app = builder.Build();
+var app = builder.Build(); // Constrói a aplicação
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment()) // Permite a visualização da documentação da API
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(); // Habilita o middleware do Swagger
+    app.UseSwaggerUI(); // Habilita o middleware do Swagger UI
 }
 
-if (!app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment()) // Redireciona HTTP para HTTPS
 {
-    app.UseHttpsRedirection();
+    app.UseHttpsRedirection(); // Habilita o middleware de redirecionamento HTTPS
 }
 
-app.UseAuthorization();
+app.UseAuthorization(); // Habilita o middleware de autorização
 
-app.MapControllers();
+app.MapControllers(); // Mapeia os controllers
 
-app.Run();
+app.Run(); // Executa a aplicação
