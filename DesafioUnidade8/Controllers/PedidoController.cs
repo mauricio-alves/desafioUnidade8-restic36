@@ -22,14 +22,14 @@ namespace WebAPI.Controllers
         {
             var pedidos = await _context.Pedidos
                 .Include(p => p.PedidoTemProdutos) // Inclui os produtos em cada pedido
-                .ToListAsync();
+                .ToListAsync(); // Busca todos os pedidos
 
             if (pedidos == null)
             {
                 return NotFound("Pedidos não encontrados.");
             }
 
-            return pedidos; // Retorna os pedidos
+            return Ok(new {message= "Pedidos encontrados com sucesso!", pedidos}); // Retorna todos os pedidos
         }
 
         // GET DETAILS BY ID: api/Pedido/1
@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
                 return NotFound("Pedido não encontrado.");
             }
 
-            return pedido; // Retorna o pedido
+            return Ok(new {message= "Pedido encontrado com sucesso!", pedido}); // Retorna o pedido
         }
 
         // POST: api/Pedido
@@ -60,17 +60,19 @@ namespace WebAPI.Controllers
             _context.Pedidos.Add(pedido); // Adiciona o pedido
             await _context.SaveChangesAsync(); // Salva o pedido no banco de dados
 
-            return CreatedAtAction(nameof(GetPedido), new { id = pedido.Id_Pedido }, pedido); // Retorna o pedido criado
+            return CreatedAtAction(nameof(GetPedido), new { id = pedido.Id_Pedido }, new {message= "Pedido criado com sucesso!", pedido}); // Retorna o pedido criado
         }
 
         // PUT: api/Pedido/1
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPedido(int id, Pedido pedido) // Atualiza um pedido
         {
-            if (id != pedido.Id_Pedido)
+            if (pedido == null)
             {
-                return BadRequest("Id do pedido não corresponde.");
+                return BadRequest("Pedido não informado.");
             }
+
+            pedido.Id_Pedido = id; // Atribui o id da URL ao objeto pedido
 
             _context.Entry(pedido).State = EntityState.Modified; // Atualiza o pedido
 
@@ -90,7 +92,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return Ok(pedido); // Retorna o pedido atualizado
+            return Ok(new {message= "Pedido atualizado com sucesso!", pedido}); // Retorna o pedido atualizado
         }
 
         // DELETE: api/Pedido/1
@@ -106,7 +108,7 @@ namespace WebAPI.Controllers
             _context.Pedidos.Remove(pedido); // Remove o pedido
             await _context.SaveChangesAsync(); // Salva as alterações
 
-            return Ok(pedido); // Retorna o pedido removido
+            return Ok(new {message= "Pedido removido com sucesso!", pedido}); // Retorna o pedido removido
         }
 
         private bool PedidoExists(int id)

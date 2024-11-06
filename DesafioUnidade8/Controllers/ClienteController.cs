@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
                 return NotFound("Clientes não encontrados.");
             }
 
-            return clientes; // Retorna os clientes            
+            return Ok(new {message= "Clientes encontrados com sucesso!", clientes}); // Retorna todos os clientes            
         }
 
         // GET DETAILS BY ID: api/Cliente/1
@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
                 return NotFound("Cliente não encontrado.");
             }
 
-            return cliente; // Retorna o cliente
+            return Ok(new {message= "Cliente encontrado com sucesso!", cliente}); // Retorna o cliente
         }
 
         // POST: api/Cliente
@@ -62,17 +62,19 @@ namespace WebAPI.Controllers
             _context.Clientes.Add(cliente); // Adiciona o cliente
             await _context.SaveChangesAsync(); // Salva o cliente no banco de dados
 
-            return CreatedAtAction(nameof(GetCliente), new { id = cliente.Id_Cliente }, cliente); // Retorna o cliente criado
+            return CreatedAtAction(nameof(GetCliente), new { id = cliente.Id_Cliente }, new {message= "Cliente criado com sucesso!", cliente}); // Retorna o cliente criado
         }
 
         // PUT: api/Cliente/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(int id, Cliente cliente) // Atualiza um cliente
+        public async Task<IActionResult> PutCliente(int id, [FromBody] Cliente cliente) // Atualiza um cliente
         {
-            if (id != cliente.Id_Cliente)
+            if (cliente == null)
             {
-                return BadRequest("Id do cliente não corresponde.");
+                return BadRequest("Cliente não informado.");
             }
+
+            cliente.Id_Cliente = id; // Atribui o id da URL ao objeto cliente
 
             _context.Entry(cliente).State = EntityState.Modified; // Atualiza o cliente
 
@@ -92,7 +94,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return Ok(cliente); // Retorna o cliente atualizado
+            return Ok(new {message= "Cliente atualizado com sucesso!", cliente}); // Retorna o cliente atualizado
         }
 
         // DELETE: api/Cliente/1
@@ -108,7 +110,7 @@ namespace WebAPI.Controllers
             _context.Clientes.Remove(cliente); // Remove o cliente
             await _context.SaveChangesAsync(); // Salva as alterações
 
-            return Ok(cliente); // Retorna o cliente removido
+            return Ok(new {message= "Cliente removido com sucesso!", cliente}); // Retorna o cliente removido
         }
 
         private bool ClienteExists(int id)

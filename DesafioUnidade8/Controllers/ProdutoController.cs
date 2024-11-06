@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
                 return NotFound("Produtos não encontrados.");
             }
 
-            return produtos; // Retorna os produtos
+            return Ok(new {message= "Produtos encontrados com sucesso!", produtos}); // Retorna todos os produtos
         }
 
         // GET DETAILS BY ID: api/Produto/1
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
                 return NotFound("Produto não encontrado.");
             }
 
-            return produto; // Retorna o produto
+            return Ok(new {message= "Produto encontrado com sucesso!", produto}); // Retorna o produto
         }
 
         // POST: api/Produto
@@ -56,17 +56,19 @@ namespace WebAPI.Controllers
             _context.Produtos.Add(produto); // Adiciona o produto
             await _context.SaveChangesAsync(); // Salva o produto no banco de dados
 
-            return CreatedAtAction(nameof(GetProduto), new { id = produto.Id_Produto }, produto); // Retorna o produto criado
+            return CreatedAtAction(nameof(GetProduto), new { id = produto.Id_Produto },  new {message= "Produto criado com sucesso!", produto}); // Retorna o produto criado
         }
 
         // PUT: api/Produto/1
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduto(int id, Produto produto) // Atualiza um produto
         {
-            if (id != produto.Id_Produto)
+            if (produto == null)
             {
-                return BadRequest("Id do produto não corresponde.");
+                return BadRequest("Produto não informado.");
             }
+
+            produto.Id_Produto = id; // Atribui o id da URL ao objeto produto
 
             _context.Entry(produto).State = EntityState.Modified; // Atualiza o produto
 
@@ -86,7 +88,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return Ok(produto); // Retorna o produto atualizado
+            return Ok(new {message= "Produto atualizado com sucesso!", produto}); // Retorna o produto atualizado
         }
 
         // DELETE: api/Produto/1
@@ -102,7 +104,7 @@ namespace WebAPI.Controllers
             _context.Produtos.Remove(produto); // Remove o produto
             await _context.SaveChangesAsync(); // Salva as alterações no banco de dados
 
-            return Ok(produto); // Retorna o produto removido
+            return Ok(new {message= "Produto removido com sucesso!", produto}); // Retorna o produto removido
         }
 
         private bool ProdutoExists(int id)

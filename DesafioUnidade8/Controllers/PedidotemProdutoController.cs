@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
                 return NotFound("Pedidos não encontrados.");
             }
 
-            return pedidosTemProdutos; // Retorna os pedidos
+            return Ok(new {message= "Pedidos encontrados com sucesso!", pedidosTemProdutos}); // Retorna todos os pedidos
         }
 
         // GET DETAILS BY ID: api/PedidoTemProduto/1
@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
                 return NotFound("Pedido não encontrado.");
             }
 
-            return pedidoTemProduto; // Retorna o pedido
+            return Ok(new {message= "Pedido encontrado com sucesso!", pedidoTemProduto}); // Retorna o pedido
         }
 
         // POST: api/PedidoTemProduto
@@ -62,17 +62,19 @@ namespace WebAPI.Controllers
             _context.PedidoTemProdutos.Add(pedidoTemProduto); // Adiciona o pedido
             await _context.SaveChangesAsync(); // Salva o pedido no banco de dados
 
-            return CreatedAtAction(nameof(GetPedidoTemProduto), new { id = pedidoTemProduto.Id_PedidoProduto }, pedidoTemProduto); // Retorna o pedido criado
+            return CreatedAtAction(nameof(GetPedidoTemProduto), new { id = pedidoTemProduto.Id_PedidoProduto }, new {message= "Pedido criado com sucesso!", pedidoTemProduto}); // Retorna o pedido criado
         }
 
         // PUT: api/PedidoTemProduto/1
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPedidoTemProduto(int id, Pedido_tem_Produto pedidoTemProduto) // Atualiza um pedido
         {
-            if (id != pedidoTemProduto.Id_PedidoProduto)
+            if (pedidoTemProduto == null)
             {
-                return BadRequest("Id do pedido não corresponde.");
+                return BadRequest("Pedido não informado.");
             }
+
+            pedidoTemProduto.Id_PedidoProduto = id; // Atribui o id da URL ao objeto pedido
 
             _context.Entry(pedidoTemProduto).State = EntityState.Modified; // Atualiza o pedido
 
@@ -92,7 +94,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return Ok(pedidoTemProduto); // Retorna o pedido atualizado
+            return Ok(new {message= "Pedido atualizado com sucesso!", pedidoTemProduto}); // Retorna o pedido atualizado
         }
 
         // DELETE: api/PedidoTemProduto/1
@@ -108,7 +110,7 @@ namespace WebAPI.Controllers
             _context.PedidoTemProdutos.Remove(pedidoTemProduto); // Remove o pedido
             await _context.SaveChangesAsync(); // Salva as alterações
 
-            return Ok(pedidoTemProduto); // Retorna o pedido removido
+            return Ok(new {message= "Pedido removido com sucesso!", pedidoTemProduto}); // Retorna o pedido removido
         }
 
         private bool PedidoTemProdutoExists(int id)

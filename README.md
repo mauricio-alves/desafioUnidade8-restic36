@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Implementar uma API baseada no modelo de banco de dados que foi criado no Mini Projeto 1. Essa atividade permitirá que se aplique o conhecimento de modelagem de dados, transformando o modelo em uma API funcional.
+Implementar uma API baseada no modelo de banco de dados que foi criado no [Mini Projeto 1](https://github.com/mauricio-alves/miniprojeto1-restic36). Essa atividade permitirá que se aplique o conhecimento de modelagem de dados, transformando o modelo em uma API funcional.
 
 ## Descrição do Problema
 
@@ -24,3 +24,7 @@ João precisa de um sistema para gerenciar os pedidos feitos por seus clientes. 
 - Entity Framework;
 - PostgreSQL;
 - Swagger.
+
+Após mais de dois anos codificando com frameworks e bibliotecas em javascript, esse foi um desafio para mim por ter sido o meu primeiro contato com o C#.
+
+Se quiser ver o resultado onde testo os endpoints, acesse este [link](https://www.youtube.com/).
