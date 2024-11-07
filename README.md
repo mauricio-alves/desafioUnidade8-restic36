@@ -27,4 +27,4 @@ João precisa de um sistema para gerenciar os pedidos feitos por seus clientes. 
 
 Após mais de dois anos codificando com frameworks e bibliotecas em javascript, esse foi um desafio para mim por ter sido o meu primeiro contato com o C#.
 
-Se quiser ver o resultado onde testo os endpoints, acesse este [link](https://www.youtube.com/).
+Se quiser ver o resultado onde apresento o modelo lógico e testo os endpoints, acesse este [link](https://youtu.be/Mi2bssIL-xs).
